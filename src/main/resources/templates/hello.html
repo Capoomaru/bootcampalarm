@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Title</title>
+</head>
+<body>
+    <h3 th:text="Test">Hello World, Thymeleaf Project.</h3>
+
+    <div th:with="firstValue=${'타임리프'}">
+        <h3 th:text="${firstValue}"></h3>
+    </div>
+</body>
+</html>

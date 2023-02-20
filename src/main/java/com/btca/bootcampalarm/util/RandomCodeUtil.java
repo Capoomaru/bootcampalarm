@@ -1,7 +1,10 @@
 package com.btca.bootcampalarm.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Random;
 
+@Component
 public class RandomCodeUtil {
 
     public static int createCode() {

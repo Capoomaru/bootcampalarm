@@ -1,4 +1,4 @@
-package com.btca.bootcampalarm.dto;
+package com.btca.bootcampalarm.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +17,7 @@ import org.hibernate.annotations.DynamicUpdate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class MailCode {
+public class MailCode extends BaseTimeEntity {
     @Id
     @NotNull
     @Column
@@ -39,6 +39,3 @@ public class MailCode {
     }
 
 }
-
-
-

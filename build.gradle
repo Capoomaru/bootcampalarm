@@ -43,11 +43,7 @@ dependencies {
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
-    //jsp library == jstl
-    implementation group: 'org.glassfish.web', name: 'jakarta.servlet.jsp.jstl', version: '2.0.0'
-
-    //jsp 템플릿 엔진을 사용할 수 있도록
-    implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 tasks.named('test') {
