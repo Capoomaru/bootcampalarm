@@ -37,3 +37,4 @@ out/
 .vscode/
 
 **/resources/**/*.properties
+**/resources/*.properties
