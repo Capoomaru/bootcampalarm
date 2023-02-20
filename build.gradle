@@ -42,6 +42,12 @@ dependencies {
     annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
     annotationProcessor "jakarta.annotation:jakarta.annotation-api"
     annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+
+    //jsp library == jstl
+    implementation 'javax.servlet:jstl'
+
+    //jsp 템플릿 엔진을 사용할 수 있도록
+    implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
 }
 
 tasks.named('test') {
