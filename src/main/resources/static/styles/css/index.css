@@ -2,14 +2,50 @@ body{
     display: flex;
     flex-direction: column;
 
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
+
+    height: 100vh;
 }
 
 header h1 {
-    font-size: 1.4em;
+    font-size: 3.0em;
     font-weight: bold;
 }
+
+section {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    min-height: 40vh;
+}
+
+.camp-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: center;
+
+    min-width: 50vw;
+}
+
+.field-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    justify-content: space-between;
+    align-items: center;
+
+    min-width: 50vw;
+}
+
+
 
 .pull {
     display: block;
@@ -21,4 +57,19 @@ header h1 {
 
 .hide {
     display: none;
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+}
+
+.button-wrapper button {
+    font-size: 1.3em;
+    margin: 10px;
 }

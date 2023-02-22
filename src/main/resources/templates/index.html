@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>main page</title>
+    <title>bootCampAlarm</title>
 
     <link href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css" rel="stylesheet">
     <link th:href="@{/styles/css/index.css}" rel="stylesheet">
@@ -13,29 +13,34 @@
 
 </head>
 <body>
-    <header>
-        <h1>부트캠프 메일 신청</h1>
-    </header>
-
     <section>
-        <div th:each="item : ${bootCampList}">
-            <input type="checkbox" >
-            <label th:text="${item}"></label>
+        <h1>부트캠프 메일 신청</h1>
+        <div class="form-wrapper">
+            <form action="/testMail" method="post">
+                <div class="camp-wrapper">
+                    <div th:each="camp : ${campList}" class="camp">
+                        <input type="checkbox" th:field="*{campList}" th:value="${camp.getName()}">
+                        <label th:for="${#ids.prev('')}" th:text="${camp.getName()}"></label>
+                    </div>
+                </div>
+
+                <div class="field-wrapper">
+                    <div th:each="field : ${fieldList}" class="field">
+                        <input type="checkbox" th:field="*{fieldList}" th:value="${field.getName()}">
+                        <label th:for="${#ids.prev('')}" th:text="${field.getName()}"></label>
+                    </div>
+                </div>
+
+                <div class="button-wrapper">
+                    <button class="pull">불러오기</button>
+                    <button class="subscribe">구독하기</button>
+                </div>
+
+
+
+                <input type="text" placeholder="메일 입력" class="mailInput">
+            </form>
         </div>
-
-        <div th:each="item : ${fields}">
-            <input type="checkbox" >
-            <label th:text="${item}"></label>
-        </div>
-
-        <button class="pull">불러오기</button>
-        <button class="subscribe">구독하기</button>
-
-        <form action="/members/new" method="post">
-            <input type="text" placeholder="메일 입력" class="mailInput hide">
-            <button type="submit" class="hide ajaxSubmit">인증하기</button>
-        </form>
-
     </section>
 
     <script th:src="@{/styles/js/index.js}"></script>
