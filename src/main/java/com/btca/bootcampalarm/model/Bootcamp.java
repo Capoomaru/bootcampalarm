@@ -29,4 +29,8 @@ public class Bootcamp extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private BootcampType type;
 
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private BootcampStatus status;
+
 }

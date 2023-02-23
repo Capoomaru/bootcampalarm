@@ -22,4 +22,8 @@ public class Subscribe extends BaseTimeEntity {
     @JoinColumn(name = "bootcamp_id")
     private Bootcamp bootcampId;
 
+    @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
+    private SubscribeStatus status;
+
 }
