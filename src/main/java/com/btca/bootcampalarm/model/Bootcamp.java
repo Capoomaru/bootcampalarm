@@ -21,11 +21,11 @@ public class Bootcamp extends BaseTimeEntity {
     private Long id;
 
     @NotNull
-    @Column
+    @Column(length = 30)
     private String name;
 
     @NotNull
-    @Column
+    @Column(length = 30)
     @Enumerated(EnumType.STRING)
     private BootcampType type;
 

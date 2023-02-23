@@ -4,7 +4,6 @@ import com.btca.bootcampalarm.model.MailCode;
 import com.btca.bootcampalarm.repository.MailCodeRepository;
 import com.btca.bootcampalarm.util.RandomCodeUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -41,7 +40,7 @@ public class MailService {
         javaMailSender.send(msg);
 
         MailCode mailCode = MailCode.builder()
-                .email(username)
+                .mail(username)
                 .code(code)
                 .isValidate(false)
                 .build();

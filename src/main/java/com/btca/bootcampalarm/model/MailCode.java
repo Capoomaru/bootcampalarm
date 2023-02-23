@@ -20,8 +20,8 @@ import org.hibernate.annotations.DynamicUpdate;
 public class MailCode extends BaseTimeEntity {
     @Id
     @NotNull
-    @Column
-    private String email;
+    @Column(length = 30)
+    private String mail;
 
     @NotNull
     @Min(100000)
