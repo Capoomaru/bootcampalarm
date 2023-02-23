@@ -11,7 +11,7 @@ import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-@EntityListeners(value = { AuditingEntityListener.class })
+    @EntityListeners(value = { AuditingEntityListener.class }) // Update event 가 발생하기 전/후에 할 행동을 포함하는 클래스
 @Getter
 public class BaseTimeEntity {
     @CreatedDate
@@ -22,4 +22,3 @@ public class BaseTimeEntity {
     @Column(name = "modified_at")
     private LocalDateTime modifiedAt;
 }
-
