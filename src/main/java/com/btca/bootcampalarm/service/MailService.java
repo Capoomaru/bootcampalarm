@@ -48,11 +48,11 @@ public class MailService {
     }
 
     @Transactional
-    public boolean validateCode(String email, int code) {
-        MailCode emailCode = mailCodeRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("인증 기록이 존재하지 않습니다."));
+    public boolean validateCode(String mail, int code) {
+        MailCode mailCode = mailCodeRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("인증 기록이 존재하지 않습니다."));
 
-        if(emailCode.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)) && emailCode.getCode() == code) {
-            mailCodeRepository.save(emailCode.updateIsValidate());
+        if(mailCode.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)) && mailCode.getCode() == code) {
+            mailCodeRepository.save(mailCode.updateIsValidate());
             return true;
         }
         else
@@ -61,14 +61,14 @@ public class MailService {
     }
 
     @Transactional(readOnly = true)
-    public boolean isValidateUser(String email) {
-        MailCode mailCode = mailCodeRepository.findByEmail(email).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
+    public boolean isValidateUser(String mail) {
+        MailCode mailCode = mailCodeRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
         return mailCode.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
     }
 
     @Transactional(readOnly = true)
-    public boolean duplicationCheck(String email) {
-        return mailCodeRepository.existsByEmail(email);
+    public boolean duplicationCheck(String mail) {
+        return mailCodeRepository.existsByMail(mail);
     }
 
 }

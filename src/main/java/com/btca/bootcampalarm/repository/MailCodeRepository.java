@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface MailCodeRepository extends JpaRepository<MailCode, Integer> {
 
-    Optional<MailCode> findByEmail(String email);
-    Boolean existsByEmail(String email);
+    Optional<MailCode> findByMail(String mail);
+    Boolean existsByMail(String mail);
 
 }

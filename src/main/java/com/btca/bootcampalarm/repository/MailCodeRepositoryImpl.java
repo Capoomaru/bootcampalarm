@@ -12,10 +12,10 @@ public class MailCodeRepositoryImpl implements MailCodeRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public Boolean findIsValidateByEMail(String email) {
+    public Boolean findIsValidateByMail(String mail) {
         return jpaQueryFactory.select(mailCode.isValidate)
                 .from(mailCode)
-                .where(mailCode.email.eq(email))
+                .where(mailCode.mail.eq(mail))
                 .fetchFirst();
     }
 
