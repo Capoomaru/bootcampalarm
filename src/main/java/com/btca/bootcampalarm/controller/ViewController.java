@@ -2,8 +2,6 @@ package com.btca.bootcampalarm.controller;
 
 import com.btca.bootcampalarm.dto.BootcampDto;
 import com.btca.bootcampalarm.service.BootcampService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

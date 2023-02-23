@@ -1,7 +1,10 @@
 package com.btca.bootcampalarm.dto;
 
 import com.btca.bootcampalarm.model.BootcampType;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
