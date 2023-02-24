@@ -14,31 +14,34 @@
 </head>
 <body>
     <section>
-        <h1>부트캠프 메일 신청</h1>
+        <h1 class="service-name">부트캠프 메일 신청</h1>
         <div class="form-wrapper">
-            <form action="/testMail" method="post">
-                <div class="camp-wrapper">
-                    <div th:each="camp : ${campList}" class="camp">
+            <form action="/testMail" method="post" class="form">
+
+                <span>부트캠프 목록</span>
+                <div class="camps-wrapper checkboxes-wrapper">
+                    <div th:each="camp : ${campList}" class="camp checkbox">
                         <input type="checkbox" th:field="*{campList}" th:value="${camp.getName()}">
                         <label th:for="${#ids.prev('')}" th:text="${camp.getName()}"></label>
                     </div>
                 </div>
 
-                <div class="field-wrapper">
-                    <div th:each="field : ${fieldList}" class="field">
+                <span>개발 목록</span>
+                <div class="fields-wrapper checkboxes-wrapper">
+
+                    <div th:each="field : ${fieldList}" class="field checkbox">
                         <input type="checkbox" th:field="*{fieldList}" th:value="${field.getName()}">
                         <label th:for="${#ids.prev('')}" th:text="${field.getName()}"></label>
                     </div>
                 </div>
+
+                <input type="email" placeholder="메일 입력" class="mail-input" required>
 
                 <div class="button-wrapper">
                     <button class="pull">불러오기</button>
                     <button class="subscribe">구독하기</button>
                 </div>
 
-
-
-                <input type="text" placeholder="메일 입력" class="mailInput">
             </form>
         </div>
     </section>
