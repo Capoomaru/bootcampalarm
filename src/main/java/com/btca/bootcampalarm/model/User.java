@@ -39,11 +39,6 @@ public class User extends BaseTimeEntity {
     @Column(name = "is_validate", columnDefinition = "tinyint(1) default 0")
     private boolean isValidate;
 
-    public User updateIsValidate() {
-        this.isValidate = true;
-        return this;
-    }
-
     @Column(name = "subscribe_cnt")
     @ColumnDefault("0")
     @Builder.Default
@@ -54,4 +49,8 @@ public class User extends BaseTimeEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Subscribe> subscribeList = new ArrayList<>();
 
+    public User updateIsValidate() {
+        this.isValidate = true;
+        return this;
+    }
 }
