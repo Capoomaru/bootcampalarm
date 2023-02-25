@@ -20,7 +20,6 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
 
-    //TODO : 글 수정 필요
     public Integer sendCodeMail(String mailAddress) {
         int code = RandomCodeUtil.createCode();
         SimpleMailMessage msg = new SimpleMailMessage();

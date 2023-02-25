@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
-    @EntityListeners(value = { AuditingEntityListener.class }) // Update event 가 발생하기 전/후에 할 행동을 포함하는 클래스
+@EntityListeners(value = { AuditingEntityListener.class }) // Update event 가 발생하기 전/후에 할 행동을 포함하는 클래스
 @Getter
 public class BaseTimeEntity {
     @CreatedDate
