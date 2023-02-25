@@ -1,7 +1,7 @@
 package com.btca.bootcampalarm.service;
 
-import com.btca.bootcampalarm.model.MailCode;
-import com.btca.bootcampalarm.repository.MailCodeRepository;
+import com.btca.bootcampalarm.model.User;
+import com.btca.bootcampalarm.repository.UserRepository;
 import com.btca.bootcampalarm.util.RandomCodeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Service
 public class MailService {
 
-    private final MailCodeRepository mailCodeRepository;
+    private final UserRepository userRepository;
 
     private final JavaMailSender javaMailSender;
 
@@ -39,20 +39,20 @@ public class MailService {
         msg.setText(content.toString());
         javaMailSender.send(msg);
 
-        MailCode mailCode = MailCode.builder()
+        User user = User.builder()
                 .mail(username)
                 .code(code)
                 .isValidate(false)
                 .build();
-        mailCodeRepository.save(mailCode);
+        userRepository.save(user);
     }
 
     @Transactional
     public boolean validateCode(String mail, int code) {
-        MailCode mailCode = mailCodeRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("인증 기록이 존재하지 않습니다."));
+        User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("인증 기록이 존재하지 않습니다."));
 
-        if(mailCode.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)) && mailCode.getCode() == code) {
-            mailCodeRepository.save(mailCode.updateIsValidate());
+        if(user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)) && user.getCode() == code) {
+            userRepository.save(user.updateIsValidate());
             return true;
         }
         else
@@ -62,13 +62,8 @@ public class MailService {
 
     @Transactional(readOnly = true)
     public boolean isValidateUser(String mail) {
-        MailCode mailCode = mailCodeRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
-        return mailCode.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
-    }
-
-    @Transactional(readOnly = true)
-    public boolean duplicationCheck(String mail) {
-        return mailCodeRepository.existsByMail(mail);
+        User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
+        return user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
     }
 
 }
