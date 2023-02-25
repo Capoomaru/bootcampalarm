@@ -16,7 +16,7 @@
     <section>
         <h1 class="service-name">부트캠프 메일 신청</h1>
         <div class="form-wrapper">
-            <form action="/testMail" method="post" class="form">
+            <form action="/testMail" method="POST" class="form">
 
                 <span>부트캠프 목록</span>
                 <div class="camps-wrapper checkboxes-wrapper">
@@ -34,18 +34,21 @@
                         <label th:for="${#ids.prev('')}" th:text="${field.getName()}"></label>
                     </div>
                 </div>
+            </form>
 
+            <form action="#" class="email-send-form">
                 <input type="email" placeholder="메일 입력" class="mail-input" required>
 
                 <div class="button-wrapper">
-                    <button class="pull">불러오기</button>
-                    <button class="subscribe">구독하기</button>
+                    <button class="call">불러오기</button>
+                    <button class="subscribe ">구독하기</button>
                 </div>
-
             </form>
+
         </div>
     </section>
 
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script th:src="@{/styles/js/index.js}"></script>
 </body>
 </html>
