@@ -1,23 +1,4 @@
-let subscribeBtn = document.querySelector(".subscribe");
-let pullBtn = document.querySelector(".pull");
-let mail = document.querySelectorAll(".hide");
-
 let checkboxes = document.querySelectorAll(".checkbox");
-
-subscribeBtn.addEventListener("click", function() {
-    console.log("subbtn event");
-    pullBtn.style.display="none";
-    for (let i = 0; i < mail.length; i++) {
-        mail[i].style.display="block";
-    }
-})
-pullBtn.addEventListener("click", function() {
-    console.log("pullbtn event");
-    subscribeBtn.style.display="none";
-    for (let i = 0; i < mail.length; i++) {
-        mail[i].style.display="block";
-    }
-});
 
 for (let i = 0; i < checkboxes.length; i++) {
     checkboxes[i].addEventListener("click", function () {
@@ -30,3 +11,57 @@ for (let i = 0; i < checkboxes.length; i++) {
         }
     })
 }
+
+
+let subscribeBtn = document.querySelector(".subscribe");
+let callBtn = document.querySelector(".call");
+
+subscribeBtn.addEventListener("click", function () {
+    let data = {
+        mail : $(".mail-input").val(),
+        is_new : true
+    }
+
+    console.log(data);
+
+    $.ajax({
+        url: "/api/v1/mails/codes",
+        type: "POST",
+        data: data,
+        dataType: "json",
+        timeout: 3000,
+        contentType: "application/json",
+    })
+        .done(function (data, status) {
+            console.log(data);
+            console.log(status);
+        })
+        .fail(function () {
+            console.log("error");
+        })
+})
+
+callBtn.addEventListener("click", function () {
+    let data = {
+        mail : $(".mail-input").val(),
+        is_new : false
+    }
+
+    console.log(data);
+
+    $.ajax({
+        url: "/api/v1/mails/codes",
+        type: "POST",
+        data: data,
+        dataType: "json",
+        timeout: 3000,
+        contentType: "application/json",
+    })
+        .done(function (data, status) {
+            console.log(data);
+            console.log(status);
+        })
+        .fail(function () {
+            console.log("error");
+        })
+})
