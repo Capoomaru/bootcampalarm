@@ -12,17 +12,15 @@ for (let i = 0; i < checkboxes.length; i++) {
     })
 }
 
-
 let subscribeBtn = document.querySelector(".subscribe");
 let callBtn = document.querySelector(".call");
+
 
 subscribeBtn.addEventListener("click", function () {
     event.preventDefault();
 
-    let inputMail = $(".mail-input").val();
-
     let data = {
-        mail : inputMail,
+        mail : $(".mail-input").val(),
         is_new : "true"
     }
 
@@ -38,6 +36,7 @@ subscribeBtn.addEventListener("click", function () {
     })
         .done(function (data, status, xhr) {
             console.log(data, status, xhr);
+            document.querySelector(".email-authentication-form").classList.remove("hide");
         })
         .fail(function (xhr, status, error) {
             console.log(xhr, status, error);
@@ -51,14 +50,45 @@ callBtn.addEventListener("click", function () {
         is_new : false
     }
 
+    data = JSON.stringify(data);
+
     console.log(data);
 
     $.ajax({
         url: "/api/v1/mails/codes",
         type: "POST",
         data: data,
-        dataType: "json",
-        timeout: 3000,
+        contentType: "application/json",
+    })
+        .done(function (data, status) {
+            console.log(data);
+            console.log(status);
+            document.querySelector(".email-authentication-form").classList.remove("hide");
+        })
+        .fail(function (data, status) {
+            console.log(data);
+            console.log(status);
+        })
+})
+
+let authBtn = document.querySelector(".authentication-button");
+
+authBtn.addEventListener("click", function () {
+    event.preventDefault();
+
+    let data = {
+        mail : $(".mail-input").val(),
+        code : $(".authentication-input").val()
+    }
+
+    data = JSON.stringify(data);
+
+    console.log(data);
+
+    $.ajax({
+        url: "/api/v1/mails/authorize",
+        type: "POST",
+        data: data,
         contentType: "application/json",
     })
         .done(function (data, status) {

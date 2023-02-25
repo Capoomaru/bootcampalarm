@@ -5,7 +5,7 @@ body{
     justify-content: center;
     align-items: center;
 
-    height: 100vh;
+    min-height: 100vh;
 }
 
 section {
@@ -87,8 +87,57 @@ section {
 
     min-height: 50px;
     min-width: 150px;
+}
 
+.email-send-form {
+    display: flex;
+    flex-flow: row wrap;
 
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 40px;
+}
+
+.email-send-form .mail-input {
+    padding: 10px;
+
+    min-width: 300px;
+}
+
+.email-send-form .button-wrapper {
+    display: flex;
+    flex-flow: row nowrap;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 10px;
+}
+
+.email-send-form .button-wrapper button {
+    padding: 10px 20px;
+    margin: 0 10px;
+}
+
+.email-authentication-form {
+    display: flex;
+    flex-flow: row wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 40px;
+}
+
+.email-authentication-form .authentication-input {
+    padding: 10px 20px;
+    min-width: 100px;
+}
+
+.email-authentication-form .authentication-button {
+    padding: 10px 20px;
+    margin: 0 20px;
 }
 
 .checked {
@@ -105,19 +154,4 @@ section {
 
 .hide {
     display: none;
-}
-
-.button-wrapper {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: center;
-    align-items: center;
-
-    padding: 10px;
-}
-
-.button-wrapper button {
-    font-size: 1.3em;
-    margin: 10px;
 }
