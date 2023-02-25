@@ -23,18 +23,24 @@ public class MailController {
     public ResponseEntity<?> requestEmailCode(@RequestBody MailRequestDto requestDto) {
 
         Boolean validation = requestDto.getIsNew();
-
         validation = Boolean.logicalXor(validation, userService.duplicationCheck(requestDto.getMail()));
-
         if(!validation) return ResponseEntity.badRequest().build();
+
+        if(!mailService.mailFormatCheck(requestDto.getMail()))
+            throw new IllegalArgumentException("이메일 형식이 아닙니다");
+
+        int code = mailService.sendCodeMail(requestDto.getMail());
+        mailService.updateMailCode(requestDto.getMail(), code);
 
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("authorize")
-    public ResponseEntity<?> authenticationEmailCode(@RequestBody AuthenticationRequestDto userRequest) {
+    public ResponseEntity<?> authenticationEmailCode(@RequestBody AuthenticationRequestDto authRequest) {
+        if(!mailService.mailFormatCheck(authRequest.getMail()))
+            throw new IllegalArgumentException("이메일 형식이 아닙니다");
 
-
+        mailService.validateCode(authRequest.getMail(), authRequest.getCode());
 
         return ResponseEntity.ok().build();
     }

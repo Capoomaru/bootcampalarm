@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
@@ -20,8 +21,7 @@ public class MailService {
     private final JavaMailSender javaMailSender;
 
     //TODO : 글 수정 필요
-    @Transactional
-    public void sendMail(String username) {
+    public Integer sendCodeMail(String mailAddress) {
         int code = RandomCodeUtil.createCode();
         SimpleMailMessage msg = new SimpleMailMessage();
 
@@ -30,17 +30,21 @@ public class MailService {
 
         StringBuilder content = new StringBuilder();
         content.append("BootcampAlarm 인증요청\n");
-        content.append(username);
-        content.append("님의 인증요청 코드\n");
+        content.append("인증요청 코드 : ");
         content.append(code);
 
-        msg.setTo(username);
+        msg.setTo(mailAddress);
         msg.setSubject(subject.toString());
         msg.setText(content.toString());
         javaMailSender.send(msg);
 
+        return code;
+    }
+
+    @Transactional
+    public void updateMailCode(String mail, Integer code) {
         User user = User.builder()
-                .mail(username)
+                .mail(mail)
                 .code(code)
                 .isValidate(false)
                 .build();
@@ -49,21 +53,27 @@ public class MailService {
 
     @Transactional
     public boolean validateCode(String mail, int code) {
-        User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("인증 기록이 존재하지 않습니다."));
+        User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
 
-        if(user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)) && user.getCode() == code) {
-            userRepository.save(user.updateIsValidate());
-            return true;
-        }
-        else
-            return false;
+        if (!user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5)))
+            throw new RuntimeException("인증시간이 초과하였습니다");
 
+        if (user.getCode() != code)
+            throw new RuntimeException("인증번호가 일치하지않습니다");
+
+        return true;
     }
 
     @Transactional(readOnly = true)
     public boolean isValidateUser(String mail) {
         User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
         return user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
+    }
+
+    public boolean mailFormatCheck(String mail) {
+        return Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+                .matcher(mail)
+                .matches();
     }
 
 }
