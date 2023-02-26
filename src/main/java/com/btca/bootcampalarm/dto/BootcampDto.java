@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BootcampDto {
+    private Long id;
     private String name;
     private Integer type;
 
-    public BootcampDto(String name, BootcampType type) {
+    public BootcampDto(Long id, String name, BootcampType type) {
+        this.id = id;
         this.name = name;
         this.type = type.ordinal();
     }
