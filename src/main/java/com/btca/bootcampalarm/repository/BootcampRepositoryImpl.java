@@ -19,6 +19,7 @@ public class BootcampRepositoryImpl implements BootcampRepositoryCustom {
     @Override
     public List<BootcampDto> findByType(BootcampType type) {
         return jpaQueryFactory.select(Projections.constructor(BootcampDto.class,
+                        bootcamp.id,
                         bootcamp.name,
                         bootcamp.type))
                 .from(bootcamp)
