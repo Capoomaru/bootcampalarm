@@ -1,16 +1,20 @@
-let checkboxes = document.querySelectorAll(".checkbox");
+let checkboxesForm = document.querySelector(".checkboxes-form");
 
-for (let i = 0; i < checkboxes.length; i++) {
-    checkboxes[i].addEventListener("click", function () {
-        let temp = checkboxes[i].firstElementChild;
+// 이벤트 위임
+checkboxesForm.addEventListener("click", function (e) {
+    let target = e.target;
 
-        if(temp.checked) {
-            checkboxes[i].classList.add("checked");
+    let targetParent = target.parentElement;
+
+    if (target.tagName == "LABEL") {
+        if (target.control.checked) {
+            targetParent.classList.remove("checked");
         } else {
-            checkboxes[i].classList.remove("checked");
+            targetParent.classList.add("checked");
         }
-    })
-}
+    }
+})
+
 
 let subscribeBtn = document.querySelector(".subscribe");
 let callBtn = document.querySelector(".call");
