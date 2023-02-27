@@ -28,6 +28,7 @@ let callBtn = document.querySelector(".call");
  * 구독하기 버튼에 대한 처리
  */
 subscribeBtn.addEventListener("click", function () {
+
     event.preventDefault();
 
     let data = {
@@ -45,15 +46,24 @@ subscribeBtn.addEventListener("click", function () {
         type: "POST",
         data: data,
         contentType: "application/json",
+        beforeSend: function () {
+            document.querySelector(".loading").innerHTML = "<span>메일 전송 중입니다...</span>";
+        }
     })
         .done(function (data, status, xhr) {
             // test code
             console.log(data, status, xhr);
+
             document.querySelector(".email-authentication-form").classList.remove("hide");
+
+            document.querySelector(".loading").innerHTML = "<span>메일을 전송했습니다! 인증 번호를 입력하세요.</span>";
         })
-        .fail(function (xhr, status, error) {
+        .fail(function (xhr, status, errorThrown) {
             // test code
-            console.log(xhr, status, error);
+            console.log(xhr, status, errorThrown);
+
+            // 에러 코드나 상황에 따라 다른 지침을 세워야 함.
+            document.querySelector(".loading").innerHTML = "<span>문제가 발생했습니다..</span>";
         })
 })
 
@@ -134,10 +144,14 @@ authBtn.addEventListener("click", function () {
             // test code
             console.log(data);
             console.log(status);
+
+            alert("메일 인증을 완료했습니다!");
         })
         .fail(function (data, status) {
             // test code
             console.log(data);
             console.log(status);
+
+            alert("메일 인증에 실패했습니다.");
         })
 })
