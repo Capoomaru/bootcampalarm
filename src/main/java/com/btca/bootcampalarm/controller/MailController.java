@@ -42,6 +42,8 @@ public class MailController {
 
         mailService.validateCode(authRequest.getMail(), authRequest.getCode());
 
+        userService.updateSubscribe(authRequest.getMail(), authRequest.getSubscribeList());
+
         return ResponseEntity.ok().build();
     }
 
