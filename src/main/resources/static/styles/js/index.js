@@ -4,7 +4,10 @@ let checkboxesForm = document.querySelector(".checkboxes-form");
 checkboxesForm.addEventListener("click", function (e) {
     let target = e.target;
 
+    console.log(target);
+
     let targetParent = target.parentElement;
+
 
     if (target.tagName == "LABEL") {
         if (target.control.checked) {
@@ -80,9 +83,22 @@ let authBtn = document.querySelector(".authentication-button");
 authBtn.addEventListener("click", function () {
     event.preventDefault();
 
+    let checkboxes = document.querySelectorAll(".checkbox > input");
+    let subList = [];
+
+    for (let i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+            console.log(`input id ${checkboxes[i].id}`);
+            subList.push(checkboxes[i].id);
+        }
+    }
+
+    console.log(subList);
+
     let data = {
         mail : $(".mail-input").val(),
-        code : $(".authentication-input").val()
+        code : $(".authentication-input").val(),
+        subscribe_list : subList,
     }
 
     data = JSON.stringify(data);

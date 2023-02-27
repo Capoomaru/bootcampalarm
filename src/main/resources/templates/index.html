@@ -21,8 +21,8 @@
                 <span>부트캠프 목록</span>
                 <div class="camps-wrapper checkboxes-wrapper">
                     <div th:each="camp : ${campList}" class="camp checkbox">
-                        <input type="checkbox" th:field="*{campList}" th:value="${camp.getName()}">
-                        <label th:for="${#ids.prev('')}" th:text="${camp.getName()}"></label>
+                        <input type="checkbox" th:id="${camp.id}" th:value="${camp.getName()}">
+                        <label th:for="${camp.id}" th:text="${camp.getName()}"></label>
                     </div>
                 </div>
 
@@ -30,8 +30,8 @@
                 <div class="fields-wrapper checkboxes-wrapper">
 
                     <div th:each="field : ${fieldList}" class="field checkbox">
-                        <input type="checkbox" th:field="*{fieldList}" th:value="${field.getName()}">
-                        <label th:for="${#ids.prev('')}" th:text="${field.getName()}"></label>
+                        <input type="checkbox" th:id="${field.id}" th:value="${field.getName()}">
+                        <label th:for="${field.id}" th:text="${field.getName()}"></label>
                     </div>
                 </div>
             </form>
