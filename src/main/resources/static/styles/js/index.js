@@ -21,8 +21,8 @@ checkboxesForm.addEventListener("click", function (e) {
 })
 
 
-let subscribeBtn = document.querySelector(".subscribe");
-let callBtn = document.querySelector(".call");
+let subscribeBtn = document.querySelector(".subscribe-button");
+let pullBtn = document.querySelector(".pull-button");
 
 /**
  * 구독하기 버튼에 대한 처리
@@ -70,7 +70,7 @@ subscribeBtn.addEventListener("click", function () {
 /**
  * 불러오기 버튼에 대한 처리
  */
-callBtn.addEventListener("click", function () {
+pullBtn.addEventListener("click", function () {
     event.preventDefault();
     let data = {
         mail : $(".mail-input").val(),
@@ -101,12 +101,12 @@ callBtn.addEventListener("click", function () {
         })
 })
 
-let authBtn = document.querySelector(".authentication-button");
+let authCodeBtn = document.querySelector(".authentication-button");
 
 /**
  * 이메일 인증 버튼에 대한 처리
  */
-authBtn.addEventListener("click", function () {
+authCodeBtn.addEventListener("click", function () {
     event.preventDefault();
 
     let checkboxes = document.querySelectorAll(".checkbox > input");
