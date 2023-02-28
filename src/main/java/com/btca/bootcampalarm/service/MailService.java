@@ -2,7 +2,7 @@ package com.btca.bootcampalarm.service;
 
 import com.btca.bootcampalarm.model.User;
 import com.btca.bootcampalarm.repository.UserRepository;
-import com.btca.bootcampalarm.util.RandomCodeUtil;
+import com.btca.bootcampalarm.util.RandomCodeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Service
@@ -19,9 +18,10 @@ public class MailService {
     private final UserRepository userRepository;
 
     private final JavaMailSender javaMailSender;
+    private final RandomCodeUtils randomCodeUtils;
 
     public Integer sendCodeMail(String mailAddress) {
-        int code = RandomCodeUtil.createCode();
+        int code = randomCodeUtils.createCode();
         SimpleMailMessage msg = new SimpleMailMessage();
 
         StringBuilder subject = new StringBuilder();
@@ -67,12 +67,6 @@ public class MailService {
     public boolean isValidateUser(String mail) {
         User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
         return user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
-    }
-
-    public boolean mailFormatCheck(String mail) {
-        return Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
-                .matcher(mail)
-                .matches();
     }
 
 }

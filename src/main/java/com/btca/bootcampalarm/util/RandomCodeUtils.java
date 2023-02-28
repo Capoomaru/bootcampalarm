@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 import java.util.Random;
 
 @Component
-public class RandomCodeUtil {
+public class RandomCodeUtils {
 
-    public static int createCode() {
+    public int createCode() {
         Random random = new Random();
         random.setSeed(System.currentTimeMillis());
 
