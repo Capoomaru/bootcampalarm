@@ -139,14 +139,18 @@ section {
     padding-top: 40px;
 }
 
+.email-authentication-form .button-wrapper {
+    padding: 0px 10px;
+}
+
 .email-authentication-form .authentication-input {
     padding: 10px 20px;
     min-width: 100px;
 }
 
-.email-authentication-form .authentication-button {
+.email-authentication-form button {
     padding: 10px 20px;
-    margin: 0 20px;
+    margin: 0 5px;
 }
 
 .checked {
