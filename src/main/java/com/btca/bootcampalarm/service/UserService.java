@@ -23,26 +23,14 @@ public class UserService {
     private final SubscribeRepository subscribeRepository;
     private final BootcampRepository bootcampRepository;
 
-    @Transactional
-    public String register(String mail) {
-        if(userRepository.existsByMail(mail))
-            throw new RuntimeException("이미 등록된 계정입니다.");
-        User user = User.builder()
-                .mail(mail)
-                .build();
-        user = userRepository.save(user);
-
-        return user.getMail();
-    }
-
     @Transactional(readOnly = true)
     public boolean duplicationCheck(String mail) {
         return userRepository.existsByMail(mail);
     }
 
     @Transactional
-    public void updateSubscribe(String mail, List<Long> checkedBootcampIdList) {
-        User user = userRepository.findByMail(mail).orElseThrow(() -> new RuntimeException("등록되지 않은 회원입니다."));
+    public void updateSubscribe(String mail, Integer code, List<Long> checkedBootcampIdList) {
+        User user = getValidUserWithTimer(mail, code, 10);
 
         Set<Subscribe> prevSubscribeSet = user.getSubscribeSet();
 
@@ -72,13 +60,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public List<Long> getSubscribeList(String mail, Integer code) {
-        User user = userRepository.findByMail(mail).orElseThrow(() -> new RuntimeException("등록되지 않은 회원입니다."));
-
-        if (!user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(2)))
-            throw new RuntimeException("인증시간이 초과하였습니다");
-
-        if (!Objects.equals(user.getCode(), code))
-            throw new RuntimeException("인증번호가 일치하지않습니다");
+        User user = getValidUserWithTimer(mail, code, 2);
 
         List<Long> subscribeBootcampList = new ArrayList<>();
 
@@ -89,6 +71,18 @@ public class UserService {
         subscribeBootcampList.sort(Comparator.naturalOrder());
 
         return subscribeBootcampList;
+    }
+
+    public User getValidUserWithTimer(String mail, Integer code, Integer timeout) {
+        User user = userRepository.findByMail(mail).orElseThrow(() -> new RuntimeException("등록되지 않은 회원입니다."));
+
+        if (!user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(timeout)))
+            throw new RuntimeException("인증시간이 초과하였습니다");
+
+        if (!Objects.equals(user.getCode(), code))
+            throw new RuntimeException("인증번호가 일치하지않습니다");
+
+        return user;
     }
 
 }

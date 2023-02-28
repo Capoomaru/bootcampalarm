@@ -21,7 +21,7 @@ public class SubscribeController {
         if(!mailUtils.mailFormatCheck(saveRequestDto.getMail()))
             throw new IllegalArgumentException("이메일 형식이 아닙니다");
 
-        userService.updateSubscribe(saveRequestDto.getMail(), saveRequestDto.getSubscribeList());
+        userService.updateSubscribe(saveRequestDto.getMail(), saveRequestDto.getCode(), saveRequestDto.getSubscribeList());
 
         return ResponseEntity.ok().build();
     }
