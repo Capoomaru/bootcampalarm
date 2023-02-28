@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
     private final BootcampRepository bootcampRepository;
+    private final MailService mailService;
 
     @Transactional(readOnly = true)
     public boolean duplicationCheck(String mail) {
@@ -32,12 +34,17 @@ public class UserService {
     public void updateSubscribe(String mail, Integer code, List<Long> checkedBootcampIdList) {
         User user = getValidUserWithTimer(mail, code, 10);
 
-        Set<Subscribe> prevSubscribeSet = user.getSubscribeSet();
+        Set<Subscribe> prevSubscribeSet = user.getSubscribeSet().stream()
+                .filter(subscribe -> subscribe.getStatus().equals(SubscribeStatus.SUBSCRIBE))
+                .collect(Collectors.toSet());
 
         Set<Subscribe> checkedSubscribeSet = new HashSet<>();
+        List<Bootcamp> checkedBootcampList = new ArrayList<>();
 
         for (Long bootcampId : checkedBootcampIdList) {
             Bootcamp bootcamp = bootcampRepository.findById(bootcampId).orElseThrow(() -> new RuntimeException("존재하지 않는 부트캠프입니다."));
+
+            checkedBootcampList.add(bootcamp);
 
             Subscribe subscribe = Subscribe.builder()
                     .userId(user)
@@ -54,6 +61,8 @@ public class UserService {
         addSubscribeSet.removeAll(prevSubscribeSet);
         deleteSubscribeSet.removeAll(checkedSubscribeSet);
 
+        mailService.sendSaveMail(mail, checkedBootcampList);
+
         subscribeRepository.saveAll(addSubscribeSet);
         subscribeRepository.deleteAll(deleteSubscribeSet);
     }
@@ -62,13 +71,9 @@ public class UserService {
     public List<Long> getSubscribeList(String mail, Integer code) {
         User user = getValidUserWithTimer(mail, code, 2);
 
-        List<Long> subscribeBootcampList = new ArrayList<>();
-
-        for (Subscribe subscribe : user.getSubscribeSet()) {
-            subscribeBootcampList.add(subscribe.getBootcampId().getId());
-        }
-
-        subscribeBootcampList.sort(Comparator.naturalOrder());
+        List<Long> subscribeBootcampList = user.getSubscribeSet().stream()
+                .filter(subscribe -> subscribe.getStatus().equals(SubscribeStatus.SUBSCRIBE))
+                .map(Subscribe::getId).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
         return subscribeBootcampList;
     }

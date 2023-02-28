@@ -1,5 +1,6 @@
 package com.btca.bootcampalarm.service;
 
+import com.btca.bootcampalarm.model.Bootcamp;
 import com.btca.bootcampalarm.model.User;
 import com.btca.bootcampalarm.repository.UserRepository;
 import com.btca.bootcampalarm.util.RandomCodeUtils;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,7 +25,6 @@ public class MailService {
 
     public Integer sendCodeMail(String mailAddress) {
         int code = randomCodeUtils.createCode();
-        SimpleMailMessage msg = new SimpleMailMessage();
 
         StringBuilder subject = new StringBuilder();
         subject.append("[BootcampAlarm] 이메일 인증 코드");
@@ -32,12 +34,33 @@ public class MailService {
         content.append("인증요청 코드 : ");
         content.append(code);
 
-        msg.setTo(mailAddress);
-        msg.setSubject(subject.toString());
-        msg.setText(content.toString());
-        javaMailSender.send(msg);
+        sendMail(mailAddress, subject.toString(), content.toString());
 
         return code;
+    }
+
+    public void sendSaveMail(String mailAddress, List<Bootcamp> subscribeBootcampList) {
+        StringBuilder subject = new StringBuilder();
+        subject.append("[BootcampAlarm] 알람 신청이 등록되었습니다.");
+
+        StringBuilder content = new StringBuilder();
+        content.append("BootcampAlarm 서비스\n");
+        content.append("구독 중인 부트캠프 리스트 : ");
+        content.append(subscribeBootcampList.stream()
+                .map(Bootcamp::getName)
+                .collect(Collectors.toList()));
+
+        sendMail(mailAddress, subject.toString(), content.toString());
+    }
+
+    public void sendMail(String mailAddress, String subject, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+
+        msg.setTo(mailAddress);
+        msg.setSubject(subject);
+        msg.setText(content);
+        javaMailSender.send(msg);
+
     }
 
     @Transactional
