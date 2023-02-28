@@ -12,9 +12,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -69,6 +68,27 @@ public class UserService {
 
         subscribeRepository.saveAll(addSubscribeSet);
         subscribeRepository.deleteAll(deleteSubscribeSet);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Long> getSubscribeList(String mail, Integer code) {
+        User user = userRepository.findByMail(mail).orElseThrow(() -> new RuntimeException("등록되지 않은 회원입니다."));
+
+        if (!user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(2)))
+            throw new RuntimeException("인증시간이 초과하였습니다");
+
+        if (!Objects.equals(user.getCode(), code))
+            throw new RuntimeException("인증번호가 일치하지않습니다");
+
+        List<Long> subscribeBootcampList = new ArrayList<>();
+
+        for (Subscribe subscribe : user.getSubscribeSet()) {
+            subscribeBootcampList.add(subscribe.getBootcampId().getId());
+        }
+
+        subscribeBootcampList.sort(Comparator.naturalOrder());
+
+        return subscribeBootcampList;
     }
 
 }

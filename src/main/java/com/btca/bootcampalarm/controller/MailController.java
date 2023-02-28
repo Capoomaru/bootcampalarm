@@ -7,10 +7,7 @@ import com.btca.bootcampalarm.service.UserService;
 import com.btca.bootcampalarm.util.MailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/mails")
@@ -43,16 +40,6 @@ public class MailController {
             throw new IllegalArgumentException("이메일 형식이 아닙니다");
 
         mailService.validateCode(authRequest.getMail(), authRequest.getCode());
-
-        userService.updateSubscribe(authRequest.getMail(), authRequest.getSubscribeList());
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("save")
-    public ResponseEntity<?> saveForm(@RequestBody AuthenticationRequestDto userRequest) {
-
-
 
         return ResponseEntity.ok().build();
     }
