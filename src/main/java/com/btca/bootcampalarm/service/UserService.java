@@ -73,6 +73,13 @@ public class UserService {
         return subscribeBootcampList;
     }
 
+    @Transactional
+    public void deleteUser(String mail, Integer code) {
+        User user = getValidUserWithTimer(mail, code, 2);
+
+        userRepository.delete(user);
+    }
+
     public User getValidUserWithTimer(String mail, Integer code, Integer timeout) {
         User user = userRepository.findByMail(mail).orElseThrow(() -> new RuntimeException("등록되지 않은 회원입니다."));
 
