@@ -16,7 +16,7 @@ public class ViewController {
 
     @GetMapping("/")
     public String indexView(Model model) {
-        /* DB로부터 리스트를 가져오는 코드 필요 */
+
         List<List<BootcampDto>> list = bootcampService.getBootcampList();
 
         List<BootcampDto> campList = list.get(0);
@@ -25,8 +25,6 @@ public class ViewController {
 
         model.addAttribute("campList", campList);
         model.addAttribute("fieldList", devField);
-
-        /**********************************/
 
         return "index";
     }
