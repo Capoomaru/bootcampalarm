@@ -73,7 +73,8 @@ public class UserService {
 
         List<Long> subscribeBootcampList = user.getSubscribeSet().stream()
                 .filter(subscribe -> subscribe.getStatus().equals(SubscribeStatus.SUBSCRIBE))
-                .map(Subscribe::getId).sorted(Comparator.naturalOrder()).collect(Collectors.toList());
+                .map((subscribe -> subscribe.getBootcampId().getId()))
+                .sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
         return subscribeBootcampList;
     }
