@@ -1,5 +1,7 @@
 let is_new = true;
 
+let campListBtn = document.querySelector("#camp-list-button");
+let fieldListBtn = document.querySelector("#field-list-button");
 let checkboxesForm = document.querySelector(".checkboxes-form");
 
 /**
@@ -19,6 +21,10 @@ checkboxesForm.addEventListener("click", function (e) {
         } else {
             targetParent.classList.add("checked");
         }
+    } else if (target.id === "camp-list-button") {
+        document.querySelector(".camps-wrapper").classList.toggle("hide");
+    } else if (target.id === "field-list-button") {
+        document.querySelector(".fields-wrapper").classList.toggle("hide");
     }
 })
 
@@ -191,7 +197,8 @@ authCodeBtn.addEventListener("click", function () {
                 document.querySelector(".mail-input").disabled = true;
                 document.querySelector(".authentication-input").disabled = true;
                 document.querySelector(".save-alert").innerHTML = "<span>저장 버튼을 꼭 눌러 주세요!</span>"
-
+                document.querySelector(".camps-wrapper").classList.toggle("hide");
+                document.querySelector(".fields-wrapper").classList.toggle("hide");
                 let checkboxes = document.querySelectorAll(".checkbox > input");
 
                 for (let i = 0; i < checkboxes.length; i++) {
@@ -239,8 +246,16 @@ saveButton.addEventListener("click", function () {
         }
     }
 
+
+
     let conf;
-    conf = confirm(`${subCheckList} 맞습니까?`);
+
+    if (subSendList.length === 0) {
+        alert("아무것도 체크를 하지 않았습니다.");
+    } else {
+        conf = confirm(`${subCheckList} 맞습니까?`);
+    }
+
 
     if (conf === true) {
         let data = {
