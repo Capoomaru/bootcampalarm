@@ -246,8 +246,16 @@ saveButton.addEventListener("click", function () {
         }
     }
 
+
+
     let conf;
-    conf = confirm(`${subCheckList} 맞습니까?`);
+
+    if (subSendList.length === 0) {
+        alert("아무것도 체크를 하지 않았습니다.");
+    } else {
+        conf = confirm(`${subCheckList} 맞습니까?`);
+    }
+
 
     if (conf === true) {
         let data = {
