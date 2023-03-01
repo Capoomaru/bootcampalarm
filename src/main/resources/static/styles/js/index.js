@@ -1,5 +1,7 @@
 let is_new = true;
 
+let campListBtn = document.querySelector("#camp-list-button");
+let fieldListBtn = document.querySelector("#field-list-button");
 let checkboxesForm = document.querySelector(".checkboxes-form");
 
 /**
@@ -19,6 +21,10 @@ checkboxesForm.addEventListener("click", function (e) {
         } else {
             targetParent.classList.add("checked");
         }
+    } else if (target.id === "camp-list-button") {
+        document.querySelector(".camps-wrapper").classList.toggle("hide");
+    } else if (target.id === "field-list-button") {
+        document.querySelector(".fields-wrapper").classList.toggle("hide");
     }
 })
 

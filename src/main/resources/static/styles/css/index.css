@@ -45,7 +45,18 @@ section {
     font-size: 2.0em;
     font-weight: bold;
 
-    margin: 30px;
+    border-radius: 20px;
+
+    padding: 30px;
+    margin: 10px;
+
+    transition: all 0.5s ease-out;
+
+    user-select: none;
+}
+
+.form > span:hover {
+    background-color: greenyellow;
 }
 
 .checkboxes-wrapper {
