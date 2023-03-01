@@ -1,3 +1,5 @@
+let is_new = true;
+
 let checkboxesForm = document.querySelector(".checkboxes-form");
 
 /**
@@ -59,6 +61,8 @@ subscribeBtn.addEventListener("click", function () {
             document.querySelector(".loading").innerHTML = "<span>메일을 전송했습니다! 인증 번호를 입력하세요.</span>";
 
             document.querySelector(".pull-button").disabled = true;
+
+            is_new = true;
         })
         .fail(function (xhr, status, errorThrown) {
             // test code
@@ -73,10 +77,12 @@ subscribeBtn.addEventListener("click", function () {
  * 불러오기 버튼에 대한 처리
  */
 pullBtn.addEventListener("click", function () {
+
     event.preventDefault();
+
     let data = {
         mail : $(".mail-input").val(),
-        is_new : false
+        is_new : "false"
     }
 
     data = JSON.stringify(data);
@@ -89,17 +95,29 @@ pullBtn.addEventListener("click", function () {
         type: "POST",
         data: data,
         contentType: "application/json",
+        beforeSend: function () {
+            document.querySelector(".loading").innerHTML = "<span>메일을 전송했습니다...</span>";
+        }
     })
         .done(function (data, status) {
             // test code
             console.log(data);
             console.log(status);
+
+            document.querySelector(".loading").innerHTML = "<span>메일을 전송했습니다! 인증 번호를 입력하세요.</span>";
             document.querySelector(".email-authentication-form").classList.remove("hide");
+
+            document.querySelector(".mail-input").disabled = true;
+            subscribeBtn.disabled = true;
+
+            is_new = false;
         })
         .fail(function (data, status) {
             // test code
             console.log(data);
             console.log(status);
+
+            document.querySelector(".loading").innerHTML = "<span>불러오기를 실패했습니다...</span>";
         })
 })
 
@@ -121,35 +139,82 @@ authCodeBtn.addEventListener("click", function () {
     // test code
     console.log(data);
 
-    $.ajax({
-        url: "/api/v1/mails/authorize",
-        type: "POST",
-        data: data,
-        contentType: "application/json",
-    })
-        .done(function (data, status) {
-            // test code
-            console.log(data);
-            console.log(status);
-
-            alert("메일 인증을 완료했습니다!");
-
-            saveButton.classList.remove("hide");
-
-            pullBtn.disabled = true;
-            subscribeBtn.disabled = true;
-            authCodeBtn.disabled = true;
-            document.querySelector(".mail-input").disabled = true;
-            document.querySelector(".authentication-input").disabled = true;
-            document.querySelector(".save-alert").innerHTML = "<span>저장 버튼을 꼭 눌러 주세요!</span>"
+    if (is_new === true) {
+        $.ajax({
+            url: "/api/v1/mails/authorize",
+            type: "POST",
+            data: data,
+            contentType: "application/json",
         })
-        .fail(function (data, status) {
-            // test code
-            console.log(data);
-            console.log(status);
+            .done(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
 
-            alert("메일 인증에 실패했습니다.");
+                alert("메일 인증을 완료했습니다!");
+
+                saveButton.classList.remove("hide");
+
+                pullBtn.disabled = true;
+                subscribeBtn.disabled = true;
+                authCodeBtn.disabled = true;
+                document.querySelector(".mail-input").disabled = true;
+                document.querySelector(".authentication-input").disabled = true;
+                document.querySelector(".save-alert").innerHTML = "<span>저장 버튼을 꼭 눌러 주세요!</span>"
+            })
+            .fail(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
+
+                alert("메일 인증에 실패했습니다.");
+            })
+    } else {
+        $.ajax({
+            url: `/api/v1/subscribes?mail=${$(".mail-input").val()}&code=${$(".authentication-input").val()}`,
+            type: "GET",
+            contentType: "application/json",
         })
+            .done(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
+
+                alert("메일 인증을 완료했습니다!");
+
+                saveButton.classList.remove("hide");
+
+                pullBtn.disabled = true;
+                subscribeBtn.disabled = true;
+                authCodeBtn.disabled = true;
+                document.querySelector(".mail-input").disabled = true;
+                document.querySelector(".authentication-input").disabled = true;
+                document.querySelector(".save-alert").innerHTML = "<span>저장 버튼을 꼭 눌러 주세요!</span>"
+
+                let checkboxes = document.querySelectorAll(".checkbox > input");
+
+                for (let i = 0; i < checkboxes.length; i++) {
+                    console.log(checkboxes[i].parentElement);
+                    if (data.includes(Number(checkboxes[i].id))) {
+                        console.log(Number(checkboxes[i].id));
+                        checkboxes[i].checked = true;
+                        checkboxes[i].parentElement.classList.add("checked");
+                    } else {
+                        checkboxes[i].checked = false;
+                        checkboxes[i].parentElement.classList.remove("checked");
+                    }
+                }
+            })
+            .fail(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
+
+                alert("메일 인증에 실패했습니다.");
+            })
+    }
+
+
 })
 
 let saveButton = document.querySelector(".save-button");
