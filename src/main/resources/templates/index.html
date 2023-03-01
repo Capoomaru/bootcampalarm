@@ -19,7 +19,7 @@
         <div class="form-wrapper">
             <form action="/testMail" method="POST" class="form checkboxes-form">
 
-                <span id="camp-list-button">부트캠프의 모든 소식 받기</span>
+                <span id="camp-list-button">선택한 부트캠프의 모든 소식 받기</span>
                 <div class="camps-wrapper checkboxes-wrapper hide">
                     <div th:each="camp : ${campList}" class="camp checkbox">
                         <input type="checkbox" th:id="${camp.id}" th:value="${camp.getName()}">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <span id="field-list-button">개발분야로 열리는 부트캠프의 소식 받기</span>
+                <span id="field-list-button">선택한 개발분야로 열리는 부트캠프들의 소식 받기</span>
                 <div class="fields-wrapper checkboxes-wrapper hide">
 
                     <div th:each="field : ${fieldList}" class="field checkbox">

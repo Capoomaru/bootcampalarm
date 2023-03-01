@@ -197,7 +197,8 @@ authCodeBtn.addEventListener("click", function () {
                 document.querySelector(".mail-input").disabled = true;
                 document.querySelector(".authentication-input").disabled = true;
                 document.querySelector(".save-alert").innerHTML = "<span>저장 버튼을 꼭 눌러 주세요!</span>"
-
+                document.querySelector(".camps-wrapper").classList.toggle("hide");
+                document.querySelector(".fields-wrapper").classList.toggle("hide");
                 let checkboxes = document.querySelectorAll(".checkbox > input");
 
                 for (let i = 0; i < checkboxes.length; i++) {
