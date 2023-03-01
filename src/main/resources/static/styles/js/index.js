@@ -183,6 +183,7 @@ authCodeBtn.addEventListener("click", function () {
                 alert("메일 인증을 완료했습니다!");
 
                 saveButton.classList.remove("hide");
+                document.querySelector(".cancel-subscribe-button").classList.remove("hide");
 
                 pullBtn.disabled = true;
                 subscribeBtn.disabled = true;
@@ -275,4 +276,47 @@ saveButton.addEventListener("click", function () {
     } else {
 
     }
+})
+
+let subscribeCancelBtn = document.querySelector(".cancel-subscribe-button");
+
+subscribeCancelBtn.addEventListener("click", function () {
+
+    let data = {
+        mail : $(".mail-input").val(),
+        code : $(".authentication-input").val(),
+    }
+
+    data = JSON.stringify(data);
+
+    let conf;
+    conf = confirm("정말 구독을 취소하실건가요?");
+
+    if (conf === true) {
+        $.ajax({
+            url: "/api/v1/users",
+            type: "POST",
+            data: data,
+            contentType: "application/json",
+        })
+            .done(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
+
+                alert("구독을 취소했습니다!");
+
+                location.reload();
+            })
+            .fail(function (data, status) {
+                // test code
+                console.log(data);
+                console.log(status);
+
+                alert("구독 취소를 실패했습니다!");
+            })
+    } else {
+
+    }
+
 })

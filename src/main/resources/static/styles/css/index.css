@@ -126,7 +126,7 @@ section {
 
 .email-send-form .button-wrapper button {
     padding: 10px 20px;
-    margin: 0 10px;
+    margin: 10px 10px;
 }
 
 .email-authentication-form {
@@ -151,6 +151,16 @@ section {
 .email-authentication-form button {
     padding: 10px 20px;
     margin: 0 5px;
+}
+
+.email-authentication-form .button-wrapper .cancel-subscribe-button {
+    margin-left: 30px;
+
+    background-color: #f65e5e;
+
+    font-weight: bold;
+
+    color: white;
 }
 
 .checked {
