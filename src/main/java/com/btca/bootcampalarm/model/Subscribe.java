@@ -36,6 +36,12 @@ public class Subscribe extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     private SubscribeStatus status;
 
+    public Subscribe updateStatus(SubscribeStatus status) {
+        this.status = status;
+
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

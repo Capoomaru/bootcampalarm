@@ -1,8 +1,13 @@
 package com.btca.bootcampalarm.service;
 
+import com.btca.bootcampalarm.dto.BootcampUpdateDto;
+import com.btca.bootcampalarm.dto.SubscribeUserDto;
 import com.btca.bootcampalarm.model.Bootcamp;
+import com.btca.bootcampalarm.model.SubscribeStatus;
 import com.btca.bootcampalarm.model.User;
+import com.btca.bootcampalarm.repository.SubscribeRepository;
 import com.btca.bootcampalarm.repository.UserRepository;
+import com.btca.bootcampalarm.util.MailUtils;
 import com.btca.bootcampalarm.util.RandomCodeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,6 +27,8 @@ public class MailService {
 
     private final JavaMailSender javaMailSender;
     private final RandomCodeUtils randomCodeUtils;
+    private final SubscribeRepository subscribeRepository;
+    private final MailUtils mailUtils;
 
     public Integer sendCodeMail(String mailAddress) {
         int code = randomCodeUtils.createCode();
@@ -86,10 +93,23 @@ public class MailService {
         return true;
     }
 
-    @Transactional(readOnly = true)
-    public boolean isValidateUser(String mail) {
-        User user = userRepository.findByMail(mail).orElseThrow(() -> new IllegalArgumentException("없는 회원이거나 인증 기록이 존재하지 않습니다."));
-        return user.getModifiedAt().isAfter(LocalDateTime.now().minusMinutes(5));
+    @Transactional
+    public Integer sendDetectedBootcampMail(BootcampUpdateDto bootcampUpdateDto) {
+        List<SubscribeUserDto> subscribeUserList = subscribeRepository.findSubscribeAndUserByBootcampId(bootcampUpdateDto.getId());
+
+        String title = "[BootcampAlarm] "
+                + bootcampUpdateDto.getBootcampName()
+                + ' '
+                + bootcampUpdateDto.getGeneration()
+                + " 의 모집 공고 오픈 안내";
+
+        for (SubscribeUserDto item : subscribeUserList) {
+            String message = mailUtils.makeMessageFromDto(item.getUserMail(), bootcampUpdateDto);
+            sendMail(item.getUserMail(), title, message);
+            subscribeRepository.save(item.getSubscribe().updateStatus(SubscribeStatus.RECEIVED));
+        }
+
+        return subscribeUserList.size();
     }
 
 }

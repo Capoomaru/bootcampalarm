@@ -1,6 +1,7 @@
 package com.btca.bootcampalarm.controller;
 
 import com.btca.bootcampalarm.dto.AuthenticationRequestDto;
+import com.btca.bootcampalarm.dto.BootcampUpdateDto;
 import com.btca.bootcampalarm.dto.MailRequestDto;
 import com.btca.bootcampalarm.service.MailService;
 import com.btca.bootcampalarm.service.UserService;
@@ -45,5 +46,13 @@ public class MailController {
         mailService.validateCode(authRequest.getMail(), authRequest.getCode());
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("subscribes")
+    public ResponseEntity<?> sendRecruitingMail(@RequestBody BootcampUpdateDto bootcampDto) {
+
+        mailService.sendDetectedBootcampMail(bootcampDto);
+
+        return ResponseEntity.ok("hi");
     }
 }
