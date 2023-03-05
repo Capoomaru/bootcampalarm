@@ -12,6 +12,7 @@ import com.btca.bootcampalarm.util.RandomCodeUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +61,7 @@ public class MailService {
         sendMail(mailAddress, subject.toString(), content.toString());
     }
 
+    @Async
     public void sendMail(String mailAddress, String subject, String content) {
         SimpleMailMessage msg = new SimpleMailMessage();
 
